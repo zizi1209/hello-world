@@ -1,0 +1,13 @@
+linearMod <- function(x, y)
+{
+qx <- qr(x)
+coef <- solve.qr(qx, y)
+df <- nrow(x)-ncol(x)
+sigma2 <- sum((y - x%*%coef)^2)/df
+vcov <- sigma2 * chol2inv(qx$qr)
+colnames(vcov) <- rownames(vcov) <- colnames(x)
+list(coefficients = coef,
+vcov = vcov,
+sigma = sqrt(sigma2),
+df = df)
+}
